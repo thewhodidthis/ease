@@ -3,30 +3,35 @@
 Object.defineProperty(exports, '__esModule', { value: true });
 
 function easeIn(t, f, d) {
+  // TODO: Explain, t: rise, f: powerOf, d: run, v: slope
   var v = d > 1 ? t / d : t;
 
   return Math.pow(v, f);
 }
 
-function easeOut(t, f, d) {
+function easeOut(t, f, d, s) {
   var v = t / (d || 1);
+  var a = s || 1;
 
-  return 1 - easeIn(1 - v, f);
+  return a - easeIn(a - v, f);
 }
 
 function easeInOut(t, f, d) {
-  var v = t / (d || 1);
+  // Get midpoint
+  var m = 0.5 * (d || 1);
 
-  // Past the halfway point
-  if (v > 0.5) {
-    // Not worth refactoring easeIn just to be able to use easeOut below
-    return 1 - easeIn((1 - v) * 2, f) * 0.5;
+  // Slow down past the halfway point
+  if (t > m) {
+    return easeOut(t, f, m, 2) * 0.5;
   }
 
-  return easeIn(v * 2, f) * 0.5;
+  // Speed up during first half
+  return easeIn(t, f, m) * 0.5;
 }
 
+// TODO: Try out macros for these?
 function inQuad(t, d) {
+  // Better off using the spread operator for passing of arguments?
   return easeIn(t, 2, d);
 }
 
