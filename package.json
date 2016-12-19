@@ -1,0 +1,60 @@
+{
+  "name": "@thewhodidthis/easing",
+  "version": "0.0.0",
+  "description": "Just another bunch of easing functions",
+  "keywords": [
+    "easing",
+    "tween"
+  ],
+  "jsnext:main": "index.es",
+  "main": "index.js",
+  "homepage": "https://github.com/thewhodidthis/ease#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thewhodidthis/ease.git"
+  },
+  "bugs": {
+    "url": "https://github.com/thewhodidthis/ease/issues"
+  },
+  "directories": {
+    "example": "example"
+  },
+  "config": {
+    "remote": "thewhodidthis@zazie:www/example/ease/"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "clear": "npm run clear:dist && npm run clear:logs",
+    "clear:dist": "rm -rf dist/",
+    "clear:logs": "rm -f *.log",
+    "lint": "eslint index.es; exit 0",
+    "start": "npm run clear && npm run build",
+    "preexample": "npm start",
+    "example": "npm run example:link && npm run example:serve",
+    "example:link": "ln -siv \"$(pwd)/dist/ease.min.js\" example/ease.js",
+    "example:push": "rsync -avruzLPC --exclude=.DS_Store ./example/ $npm_package_config_remote",
+    "example:serve": "php -S localhost:8000 -t example/",
+    "prebuild": "mkdir -p dist/",
+    "build": "rollup -c",
+    "build:min": "uglifyjs dist/ease.js -cm > dist/ease.min.js",
+    "postbuild": "npm run build:min",
+    "preversion": "npm start"
+  },
+  "engines": {
+    "node": ">=4.2.4",
+    "npm": ">=3.5.3"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "babel-eslint": "latest",
+    "babel-preset-es2015": "latest",
+    "eslint": "latest",
+    "eslint-plugin-import": "latest",
+    "eslint-config-airbnb-base": "latest",
+    "rollup": "latest",
+    "rollup-plugin-babel": "latest",
+    "uglify-js": "latest"
+  },
+  "author": "sChzs BkgNns <sotirios.bakagiannis@gmail.com> (https://www.thewhodidthis.com)",
+  "license": "Unlicense"
+}
