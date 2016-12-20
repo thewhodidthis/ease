@@ -1,0 +1,51 @@
+body {
+  margin: 0;
+  background: #00f;
+}
+
+ol {
+  margin: 0;
+  float: left;
+  padding: 2rem;
+  background: #fff;
+  box-sizing: border-box;
+}
+
+ul {
+  margin: 0;
+  padding: 0.5rem;
+  list-style: none;
+  overflow: hidden;
+  box-sizing: border-box;
+  max-width: calc(30rem + 4px);
+}
+
+ul li {
+  float: left;
+  display: block;
+  margin: 0.5rem;
+}
+
+canvas {
+  padding: 0.5rem;
+  background: #00f;
+  border: 1px solid #fff;
+  box-sizing: border-box;
+}
+
+@media screen and (min-width: 600px) and (min-height: 500px) {
+  ul {
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    display: none;
+    position: absolute;
+    transform: translate(-50%, -50%);
+  }
+
+  ul:first-of-type,
+  ul:target {
+    display: block;
+  }
+}
+
