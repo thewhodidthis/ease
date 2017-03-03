@@ -1,77 +1,36 @@
-export function easeIn(t, f, d) {
-  // TODO: Explain, t: rise, f: powerOf, d: run, v: slope
-  const v = (d > 1) ? t / d : t;
+// Quarter circle
+const HALF_PI = Math.PI * 0.5;
 
-  return Math.pow(v, f);
-}
+// Turn things around, the out part
+const flip = fn => (x => 1 - fn(1 - x));
 
-export function easeOut(t, f, d, s) {
-  const v = t / (d || 1);
-  const a = s || 1;
+// Split down the middle, the in/out part
+const fork = (a, b) => (x => ((x < 0.5) ? (a(2 * x) * 0.5) : (0.5 + (b(2 * (x - 0.5)) * 0.5))));
 
-  return a - easeIn(a - v, f);
-}
+// The more elaborate scaling formulas
+const sine = x => 1 - Math.cos(x * HALF_PI);
+const expo = x => Math.pow(2, 10 * (x - 1));
+const circ = x => -1 * (Math.sqrt(1 - (x * x)) - 1);
 
-export function easeInOut(t, f, d) {
-  // Get midpoint
-  const m = 0.5 * (d || 1);
+// Drive out, in/out from in, band together
+const ease = (fn) => {
+  const fnOut = flip(fn);
+  const fnInOut = fork(fn, fnOut);
 
-  // Slow down past the halfway point
-  if (t > m) {
-    return easeOut(t, f, m, 2) * 0.5;
-  }
+  return {
+    in: (t, d) => fn(t / d),
+    out: (t, d) => fnOut(t / d),
+    inOut: (t, d) => fnInOut(t / d),
+  };
+};
 
-  // Speed up during first half
-  return easeIn(t, f, m) * 0.5;
-}
-
-// TODO: Try out macros for these?
-export function inQuad(t, d) {
-  // Better off using the spread operator for passing of arguments?
-  return easeIn(t, 2, d);
-}
-
-export function inCubic(t, d) {
-  return easeIn(t, 3, d);
-}
-
-export function inQuart(t, d) {
-  return easeIn(t, 4, d);
-}
-
-export function inQuint(t, d) {
-  return easeIn(t, 5, d);
-}
-
-export function outQuad(t, d) {
-  return easeOut(t, 2, d);
-}
-
-export function outCubic(t, d) {
-  return easeOut(t, 3, d);
-}
-
-export function outQuart(t, d) {
-  return easeOut(t, 4, d);
-}
-
-export function outQuint(t, d) {
-  return easeOut(t, 5, d);
-}
-
-export function inOutQuad(t, d) {
-  return easeInOut(t, 2, d);
-}
-
-export function inOutCubic(t, d) {
-  return easeInOut(t, 3, d);
-}
-
-export function inOutQuart(t, d) {
-  return easeInOut(t, 4, d);
-}
-
-export function inOutQuint(t, d) {
-  return easeInOut(t, 5, d);
-}
+export default {
+  quint: ease(x => x * x * x * x * x),
+  quart: ease(x => x * x * x * x),
+  cubic: ease(x => x * x * x),
+  quad: ease(x => x * x),
+  sine: ease(sine),
+  expo: ease(expo),
+  circ: ease(circ),
+};
 
