@@ -1,98 +1,71 @@
-(function (exports) {
+var ease = (function () {
   'use strict';
 
-  function easeIn(t, f, d) {
-    // TODO: Explain, t: rise, f: powerOf, d: run, v: slope
-    var v = d > 1 ? t / d : t;
+  // Quarter circle
+  var HALF_PI = Math.PI * 0.5;
 
-    return Math.pow(v, f);
-  }
+  // Turn things around, the out part
+  var flip = function flip(fn) {
+    return function (x) {
+      return 1 - fn(1 - x);
+    };
+  };
 
-  function easeOut(t, f, d, s) {
-    var v = t / (d || 1);
-    var a = s || 1;
+  // Split down the middle, the in/out part
+  var fork = function fork(a, b) {
+    return function (x) {
+      return x < 0.5 ? a(2 * x) * 0.5 : 0.5 + b(2 * (x - 0.5)) * 0.5;
+    };
+  };
 
-    return a - easeIn(a - v, f);
-  }
+  // The more elaborate scaling formulas
+  var sine = function sine(x) {
+    return 1 - Math.cos(x * HALF_PI);
+  };
+  var expo = function expo(x) {
+    return Math.pow(2, 10 * (x - 1));
+  };
+  var circ = function circ(x) {
+    return -1 * (Math.sqrt(1 - x * x) - 1);
+  };
 
-  function easeInOut(t, f, d) {
-    // Get midpoint
-    var m = 0.5 * (d || 1);
+  // Drive out, in/out from in, band together
+  var ease = function ease(fn) {
+    var fnOut = flip(fn);
+    var fnInOut = fork(fn, fnOut);
 
-    // Slow down past the halfway point
-    if (t > m) {
-      return easeOut(t, f, m, 2) * 0.5;
-    }
+    return {
+      in: function _in(t, d) {
+        return fn(t / d);
+      },
+      out: function out(t, d) {
+        return fnOut(t / d);
+      },
+      inOut: function inOut(t, d) {
+        return fnInOut(t / d);
+      }
+    };
+  };
 
-    // Speed up during first half
-    return easeIn(t, f, m) * 0.5;
-  }
+  var index = {
+    quint: ease(function (x) {
+      return x * x * x * x * x;
+    }),
+    quart: ease(function (x) {
+      return x * x * x * x;
+    }),
+    cubic: ease(function (x) {
+      return x * x * x;
+    }),
+    quad: ease(function (x) {
+      return x * x;
+    }),
+    sine: ease(sine),
+    expo: ease(expo),
+    circ: ease(circ)
+  };
 
-  // TODO: Try out macros for these?
-  function inQuad(t, d) {
-    // Better off using the spread operator for passing of arguments?
-    return easeIn(t, 2, d);
-  }
+  return index;
 
-  function inCubic(t, d) {
-    return easeIn(t, 3, d);
-  }
-
-  function inQuart(t, d) {
-    return easeIn(t, 4, d);
-  }
-
-  function inQuint(t, d) {
-    return easeIn(t, 5, d);
-  }
-
-  function outQuad(t, d) {
-    return easeOut(t, 2, d);
-  }
-
-  function outCubic(t, d) {
-    return easeOut(t, 3, d);
-  }
-
-  function outQuart(t, d) {
-    return easeOut(t, 4, d);
-  }
-
-  function outQuint(t, d) {
-    return easeOut(t, 5, d);
-  }
-
-  function inOutQuad(t, d) {
-    return easeInOut(t, 2, d);
-  }
-
-  function inOutCubic(t, d) {
-    return easeInOut(t, 3, d);
-  }
-
-  function inOutQuart(t, d) {
-    return easeInOut(t, 4, d);
-  }
-
-  function inOutQuint(t, d) {
-    return easeInOut(t, 5, d);
-  }
-
-  exports.easeIn = easeIn;
-  exports.easeOut = easeOut;
-  exports.easeInOut = easeInOut;
-  exports.inQuad = inQuad;
-  exports.inCubic = inCubic;
-  exports.inQuart = inQuart;
-  exports.inQuint = inQuint;
-  exports.outQuad = outQuad;
-  exports.outCubic = outCubic;
-  exports.outQuart = outQuart;
-  exports.outQuint = outQuint;
-  exports.inOutQuad = inOutQuad;
-  exports.inOutCubic = inOutCubic;
-  exports.inOutQuart = inOutQuart;
-  exports.inOutQuint = inOutQuint;
-
-}((this.Ease = this.Ease || {})));
+}());
 //# sourceMappingURL=ease.js.map
