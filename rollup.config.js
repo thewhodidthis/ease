@@ -10,7 +10,7 @@ export default {
       format: 'iife',
       indent: true,
       sourceMap: true,
-      moduleName: 'Ease',
+      moduleName: 'ease',
       dest: 'dist/ease.js'
     },
     {
