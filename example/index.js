@@ -2,9 +2,6 @@
 
 var TAU = Math.PI * 2;
 
-var types = 'easeIn,easeOut,easeInOut'.split(',');
-var plots = document.querySelectorAll('canvas');
-
 var Animation = function Animation(callback) {
   var frameId;
 
@@ -16,26 +13,25 @@ var Animation = function Animation(callback) {
     }
   };
 
-  var stop = function stop() {
-    if (frameId) {
-      frameId = window.cancelAnimationFrame(frameId);
-    }
-  };
-
   var play = function play() {
     if (!frameId) {
       frameId = window.requestAnimationFrame(tick);
     }
   };
 
+  var stop = function stop() {
+    if (frameId) {
+      frameId = window.cancelAnimationFrame(frameId);
+    }
+  };
+
   return {
     play,
     stop,
-    tick
   }
 };
 
-var CurveBall = function CurveBall(canvas, ease, f) {
+var CurveBall = function CurveBall(canvas, easing) {
   var master = canvas.getContext('2d');
 
   var center = {
@@ -46,57 +42,61 @@ var CurveBall = function CurveBall(canvas, ease, f) {
   var past = 0;
   var then = Date.now();
   var duration = canvas.height - 10;
-  var f = f || 1;
+
+  var boot = function boot(t) {
+    then = Date.now();
+    past = t || 0;
+  };
 
   var animation = new Animation(function () {
     var now = Date.now();
     var delta = now - then;
 
-    var t = (past + delta * 0.1) % duration;
-    var r = ease(t, f, duration) * canvas.height;
+    var t = (past + delta * 0.1) % (duration + 8);
+    var r = easing(t, duration) * canvas.height;
 
-    if (r >= duration) {
+    if (t >= duration) {
       animation.stop();
     } else {
       draw(r);
     }
 
-    reset(t);
+    boot(t);
   });
-
-  var reset = function reset(t) {
-    then = Date.now();
-    past = t || 0;
-  };
 
   var curve = function() {
     var buffer = canvas.cloneNode().getContext('2d');
+    var gap = 10;
+    var w = canvas.width - gap;
+    var h = canvas.height - gap;
 
-    for (var i = 0, total = canvas.width; i < total; i += 1) {
-      var x = i;
-      var y = ease(i, f, canvas.width) * canvas.height;
+    for (var x = gap; x < w; x += 3) {
+      var y = easing(x, w) * (h - gap);
+
+      buffer.fillStyle = '#fff';
 
       buffer.save();
-      buffer.translate(0, buffer.canvas.height);
+      buffer.translate(0, h);
       buffer.scale(1, -1);
       buffer.beginPath();
       buffer.arc(x, y, 1, 0, TAU);
       buffer.restore();
-      buffer.fillStyle = '#fff';
+
       buffer.fill();
     }
 
     return buffer.canvas;
   }();
 
-  var ball = function(r) {
+  var ball = function ball(r) {
     var buffer = canvas.cloneNode().getContext('2d');
     var x = canvas.width * 0.5;
     var y = canvas.height * 0.5;
 
     buffer.beginPath();
     buffer.arc(x, y, r, 0, TAU);
-    buffer.fillStyle = '#f00';
+
+    buffer.fillStyle = '#f80';
     buffer.fill();
 
     return buffer.canvas;
@@ -111,14 +111,14 @@ var CurveBall = function CurveBall(canvas, ease, f) {
   };
 
   var play = function play() {
-    reset();
+    boot();
     draw();
 
     animation.play();
   };
 
   var stop = function stop() {
-    reset();
+    boot();
     draw();
 
     animation.stop();
@@ -131,30 +131,33 @@ var CurveBall = function CurveBall(canvas, ease, f) {
   };
 };
 
-plots.forEach(function(canvas, i) {
-  // Calculate easing factor
-  var f = 2 + i % 4;
+var types = 'sine,quad,cubic,quart,circ,expo'.split(',');
+var paths = 'in,out,inOut'.split(',');
 
-  // Calculate easing type index
-  var e = Math.floor(i / 4);
+var plots = document.querySelectorAll('canvas');
+var items = document.querySelectorAll('li');
 
-  // Get easing type (in, out, inOut)
-  var easeType = types[e];
+// This is ugly
+types.forEach(function (type, j) {
+  paths.forEach(function (path, i) {
+    var indx = i + (j * 3);
+    var plot = plots[indx];
+    var item = items[indx];
 
-  // Set easing
-  var ease = Ease[easeType];
+    var easing = ease[type][path];
+    var curveBall = new CurveBall(plot, easing);
 
-  // Or just incorporate the above inside of CurveBall so that less arguments are required
-  var plot = new CurveBall(canvas, ease, f);
+    curveBall.draw();
 
-  plot.draw();
+    item.setAttribute('data-ease', type + '/' + path);
 
-  canvas.addEventListener('mouseenter', function onMouseEnter() {
-    plot.play();
-  }, false);
+    plot.addEventListener('mouseenter', function onMouseEnter() {
+      curveBall.play();
+    }, false);
 
-  canvas.addEventListener('mouseleave', function onMouseLeave() {
-    plot.stop();
-  }, false);
+    plot.addEventListener('mouseleave', function onMouseLeave() {
+      curveBall.stop();
+    }, false);
+  });
 });
 
