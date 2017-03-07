@@ -1,5 +1,11 @@
+noscript {
+  margin: 6px;
+  font: italic 12px/28px arial, sans-serif;
+}
+
 html {
   min-height: 100%;
+  overflow-y: scroll;
 }
 
 html,
@@ -8,31 +14,45 @@ body {
 }
 
 body {
-  margin: 0;
-  background: #00f;
-  background: #bbb;
-  background: #666;
+  /* color: #fff; */
+  /* color: #000; */
+  /* background: #00f; */
 }
 
 body,
-body > figure {
+figure {
+  margin: 0;
+}
+
+body,
+ul {
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-body > figure {
+figure {
   flex: 1;
   margin: auto;
-  padding: 1rem 0;
+}
+
+figcaption {
+  font-size: 90%;
+  text-align: center;
+  margin-top: 0.5rem;
+}
+
+ul {
+  margin: auto;
   flex-wrap: wrap;
   list-style: none;
+  padding: 1rem 0 0;
   /* ((boxes * box width) / pixels per font size - (margin * boxes) / sides + (border width * boxes)) */
   /* ((6 * 200) / 16 - 6 / 2) + (2 * 6) */
   max-width: calc(72rem + 12px);
 }
 
-figure figure {
+li {
   float: left;
   margin: 1rem;
   display: block;
@@ -40,30 +60,23 @@ figure figure {
   overflow: hidden;
   position: relative;
   box-sizing: border-box;
-  border: 1px solid #fff;
-  border: 1px solid #999;
+  border: 1px solid #000;
 }
 
-figure figure:only-child {
-  display: none;
-}
-
-figure figure::after {
+li::after {
   top: 2px;
   left: 2px;
-  color: #fff;
-  color: #bbb;
   z-index: 101;
   cursor: pointer;
   padding: 0.25rem;
   position: absolute;
-  letter-spacing: 1px;
+  /* letter-spacing: 1px; */
   display: inline-block;
   content: attr(data-ease);
-  font: 0.6875rem/1 sans-serif;
+  font: bold 0.6875rem/1 sans-serif;
 }
 
-figure figure::before {
+li::before {
   top: 50%;
   left: 50%;
   width: 0;
@@ -73,93 +86,24 @@ figure figure::before {
   border-radius: 50%;
   position: absolute;
   transform: translate(-50%, -50%);
-  background: rgba(125, 125, 125, 0.7);
+  background: rgba(0, 0, 255, 0.2);
+  background: #ff0;
   transition: width 0.2s, height 0.2s;
+  transition-timing-function: inherit;
 }
 
-figure figure:hover::before {
+li:hover::before {
   width: 200px;
   height: 200px;
   transition-duration: 0.5s;
 }
 
+li:only-child {
+  display: none;
+}
+
 canvas {
   max-width: 100%;
   position: relative;
-}
-
-noscript {
-  margin: 6px;
-  font: italic 12px/28px arial, sans-serif;
-}
-
-.quad-in::before {
-  transition-timing-function: cubic-bezier(0.550, 0.085, 0.680, 0.530);
-}
-.quad-out::before {
-  transition-timing-function: cubic-bezier(0.250, 0.460, 0.450, 0.940);
-}
-.quad-inOut::before {
-  transition-timing-function: cubic-bezier(0.455, 0.030, 0.515, 0.955);
-}
-
-.cubic-in::before {
-  transition-timing-function: cubic-bezier(0.550, 0.055, 0.675, 0.190);
-}
-.cubic-out::before {
-  transition-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
-}
-.cubic-inOut::before {
-  transition-timing-function: cubic-bezier(0.645, 0.045, 0.355, 1.000);
-}
-
-.quart-in::before {
-  transition-timing-function: cubic-bezier(0.895, 0.030, 0.685, 0.220);
-}
-.quart-out::before {
-  transition-timing-function: cubic-bezier(0.165, 0.840, 0.440, 1.000);
-}
-.quart-inOut::before {
-  transition-timing-function: cubic-bezier(0.770, 0.000, 0.175, 1.000);
-}
-
-.quint-in::before {
-  transition-timing-function: cubic-bezier(0.755, 0.050, 0.855, 0.060);
-}
-.quint-out::before {
-  transition-timing-function: cubic-bezier(0.230, 1.000, 0.320, 1.000);
-}
-.quint-inOut::before {
-  transition-timing-function: cubic-bezier(0.860, 0.000, 0.070, 1.000);
-}
-
-.sine-in::before {
-  transition-timing-function: cubic-bezier(0.470, 0.000, 0.745, 0.715);
-}
-.sine-out::before {
-  transition-timing-function: cubic-bezier(0.390, 0.575, 0.565, 1.000);
-}
-.sine-inOut::before {
-  transition-timing-function: cubic-bezier(0.445, 0.050, 0.550, 0.950);
-}
-
-.circ-in::before {
-  transition-timing-function: cubic-bezier(0.600, 0.040, 0.980, 0.335);
-}
-.circ-out::before {
-  transition-timing-function: cubic-bezier(0.075, 0.820, 0.165, 1.000);
-}
-.circ-inOut::before {
-  transition-timing-function: cubic-bezier(0.785, 0.135, 0.150, 0.860);
-}
-
-.expo-in::before {
-  transition-timing-function: cubic-bezier(0.950, 0.050, 0.795, 0.035);
-}
-.expo-out::before {
-  transition-timing-function: cubic-bezier(0.190, 1.000, 0.220, 1.000);
-}
-.expo-inOut::before {
-  transition-timing-function: cubic-bezier(1.000, 0.000, 0.000, 1.000);
 }
 

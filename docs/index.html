@@ -1,0 +1,156 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <title>Ease</title>
+    <link rel="stylesheet" media="all" href="docco.css" />
+  </head>
+
+  <body>
+    <div class="background"></div>
+
+    
+
+    <div class="sections">
+      <ul>
+
+        
+
+        
+        
+        <li id="section-1" class="section">
+          <div class="annotation">
+            
+            <div class="pilwrap">
+              <a class="pilcrow" href="#section-1">&#182;</a>
+            </div>
+            <h1 id="ease">Ease</h1>
+<p>Helps with the tweens</p>
+
+          </div>
+
+          
+        </li>
+        
+        
+        <li id="section-2" class="section">
+          <div class="annotation">
+            
+            <div class="pilwrap">
+              <a class="pilcrow" href="#section-2">&#182;</a>
+            </div>
+            <p>Quarter circle</p>
+
+          </div>
+
+          
+          <div class="content"><div class='highlight'><pre><span class="hljs-keyword">const</span> HALF_PI = <span class="hljs-built_in">Math</span>.PI * <span class="hljs-number">0.5</span>;</pre></div></div>
+          
+        </li>
+        
+        
+        <li id="section-3" class="section">
+          <div class="annotation">
+            
+            <div class="pilwrap">
+              <a class="pilcrow" href="#section-3">&#182;</a>
+            </div>
+            <p>The more elaborate scaling formulas
+From: <a href="https://github.com/staltz/xstream/blob/master/src/extra/tween.ts">https://github.com/staltz/xstream/blob/master/src/extra/tween.ts</a></p>
+
+          </div>
+
+          
+          <div class="content"><div class='highlight'><pre><span class="hljs-keyword">const</span> sine = <span class="hljs-function"><span class="hljs-params">x</span> =&gt;</span> <span class="hljs-number">1</span> - <span class="hljs-built_in">Math</span>.cos(x * HALF_PI);
+<span class="hljs-keyword">const</span> expo = <span class="hljs-function"><span class="hljs-params">x</span> =&gt;</span> <span class="hljs-built_in">Math</span>.pow(<span class="hljs-number">2</span>, <span class="hljs-number">10</span> * (x - <span class="hljs-number">1</span>));
+<span class="hljs-keyword">const</span> circ = <span class="hljs-function"><span class="hljs-params">x</span> =&gt;</span> <span class="hljs-number">-1</span> * (<span class="hljs-built_in">Math</span>.sqrt(<span class="hljs-number">1</span> - (x * x)) - <span class="hljs-number">1</span>);</pre></div></div>
+          
+        </li>
+        
+        
+        <li id="section-4" class="section">
+          <div class="annotation">
+            
+            <div class="pilwrap">
+              <a class="pilcrow" href="#section-4">&#182;</a>
+            </div>
+            <p>Invert, the out part</p>
+
+          </div>
+
+          
+          <div class="content"><div class='highlight'><pre><span class="hljs-keyword">const</span> flip = <span class="hljs-function"><span class="hljs-params">fn</span> =&gt;</span> (<span class="hljs-function"><span class="hljs-params">x</span> =&gt;</span> <span class="hljs-number">1</span> - fn(<span class="hljs-number">1</span> - x));</pre></div></div>
+          
+        </li>
+        
+        
+        <li id="section-5" class="section">
+          <div class="annotation">
+            
+            <div class="pilwrap">
+              <a class="pilcrow" href="#section-5">&#182;</a>
+            </div>
+            <p>Split in half, the in/out part</p>
+
+          </div>
+
+          
+          <div class="content"><div class='highlight'><pre><span class="hljs-keyword">const</span> fork = <span class="hljs-function">(<span class="hljs-params">a, b</span>) =&gt;</span> (<span class="hljs-function"><span class="hljs-params">x</span> =&gt;</span> ((x &lt; <span class="hljs-number">0.5</span>) ? (a(<span class="hljs-number">2</span> * x) * <span class="hljs-number">0.5</span>) : (<span class="hljs-number">0.5</span> + (b(<span class="hljs-number">2</span> * (x - <span class="hljs-number">0.5</span>)) * <span class="hljs-number">0.5</span>))));</pre></div></div>
+          
+        </li>
+        
+        
+        <li id="section-6" class="section">
+          <div class="annotation">
+            
+            <div class="pilwrap">
+              <a class="pilcrow" href="#section-6">&#182;</a>
+            </div>
+            <p>Drive out, in/out from in, band together</p>
+
+          </div>
+
+          
+          <div class="content"><div class='highlight'><pre><span class="hljs-keyword">const</span> ease = <span class="hljs-function">(<span class="hljs-params">fn</span>) =&gt;</span> {
+  <span class="hljs-keyword">const</span> fnOut = flip(fn);
+  <span class="hljs-keyword">const</span> fnInOut = fork(fn, fnOut);</pre></div></div>
+          
+        </li>
+        
+        
+        <li id="section-7" class="section">
+          <div class="annotation">
+            
+            <div class="pilwrap">
+              <a class="pilcrow" href="#section-7">&#182;</a>
+            </div>
+            <p>Feed the slope</p>
+
+          </div>
+
+          
+          <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">return</span> {
+    <span class="hljs-attr">in</span>: <span class="hljs-function">(<span class="hljs-params">t, d</span>) =&gt;</span> fn(t / d),
+    <span class="hljs-attr">out</span>: <span class="hljs-function">(<span class="hljs-params">t, d</span>) =&gt;</span> fnOut(t / d),
+    <span class="hljs-attr">inOut</span>: <span class="hljs-function">(<span class="hljs-params">t, d</span>) =&gt;</span> fnInOut(t / d),
+  };
+};
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> {
+  <span class="hljs-attr">quint</span>: ease(<span class="hljs-function"><span class="hljs-params">x</span> =&gt;</span> x * x * x * x * x),
+  <span class="hljs-attr">quart</span>: ease(<span class="hljs-function"><span class="hljs-params">x</span> =&gt;</span> x * x * x * x),
+  <span class="hljs-attr">cubic</span>: ease(<span class="hljs-function"><span class="hljs-params">x</span> =&gt;</span> x * x * x),
+  <span class="hljs-attr">quad</span>: ease(<span class="hljs-function"><span class="hljs-params">x</span> =&gt;</span> x * x),
+  <span class="hljs-attr">sine</span>: ease(sine),
+  <span class="hljs-attr">expo</span>: ease(expo),
+  <span class="hljs-attr">circ</span>: ease(circ),
+};</pre></div></div>
+          
+        </li>
+        
+
+      </ul>
+    </div>
+  </body>
+</html>
