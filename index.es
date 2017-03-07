@@ -1,8 +1,11 @@
+// # Ease
+// Helps with the tweens
+
 // Quarter circle
 const HALF_PI = Math.PI * 0.5;
 
 // The more elaborate scaling formulas
-// Stolen from: https://github.com/staltz/xstream/blob/master/src/extra/tween.ts
+// From: https://github.com/staltz/xstream/blob/master/src/extra/tween.ts
 const sine = x => 1 - Math.cos(x * HALF_PI);
 const expo = x => Math.pow(2, 10 * (x - 1));
 const circ = x => -1 * (Math.sqrt(1 - (x * x)) - 1);
