@@ -1,10 +1,13 @@
 'use strict';
 
+// # Ease
+// Helps with the tweens
+
 // Quarter circle
 var HALF_PI = Math.PI * 0.5;
 
 // The more elaborate scaling formulas
-// Stolen from: https://github.com/staltz/xstream/blob/master/src/extra/tween.ts
+// From: https://github.com/staltz/xstream/blob/master/src/extra/tween.ts
 var sine = function sine(x) {
   return 1 - Math.cos(x * HALF_PI);
 };
