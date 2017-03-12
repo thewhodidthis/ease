@@ -4,12 +4,6 @@
 // Quarter circle
 const HALF_PI = Math.PI * 0.5;
 
-// The more elaborate scaling formulas
-// From: https://github.com/staltz/xstream/blob/master/src/extra/tween.ts
-const sine = x => 1 - Math.cos(x * HALF_PI);
-const expo = x => Math.pow(2, 10 * (x - 1));
-const circ = x => -1 * (Math.sqrt(1 - (x * x)) - 1);
-
 // Invert, the out part
 const flip = fn => (x => 1 - fn(1 - x));
 
@@ -29,13 +23,28 @@ const ease = (fn) => {
   };
 };
 
-export default {
-  quint: ease(x => x * x * x * x * x),
-  quart: ease(x => x * x * x * x),
-  cubic: ease(x => x * x * x),
-  quad: ease(x => x * x),
-  sine: ease(sine),
-  expo: ease(expo),
-  circ: ease(circ),
+// The basic exponential definitions
+const baseNames = ['quad', 'cubic', 'quart', 'quint'];
+const base = baseNames.reduce((obj, key, i) => {
+  /* eslint-disable no-param-reassign */
+  obj[key] = ease(x => Math.pow(x, i + 2));
+
+  return obj;
+}, {});
+
+// The more elaborate scaling formulas
+// From: https://github.com/staltz/xstream/blob/master/src/extra/tween.ts
+const sine = {
+  sine: ease(x => 1 - Math.cos(x * HALF_PI)),
 };
+
+const expo = {
+  expo: ease(x => Math.pow(2, 10 * (x - 1))),
+};
+
+const circ = {
+  circ: ease(x => -1 * (Math.sqrt(1 - (x * x)) - 1)),
+};
+
+export default Object.assign(base, sine, expo, circ);
 
