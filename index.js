@@ -6,18 +6,6 @@
 // Quarter circle
 var HALF_PI = Math.PI * 0.5;
 
-// The more elaborate scaling formulas
-// From: https://github.com/staltz/xstream/blob/master/src/extra/tween.ts
-var sine = function sine(x) {
-  return 1 - Math.cos(x * HALF_PI);
-};
-var expo = function expo(x) {
-  return Math.pow(2, 10 * (x - 1));
-};
-var circ = function circ(x) {
-  return -1 * (Math.sqrt(1 - x * x) - 1);
-};
-
 // Invert, the out part
 var flip = function flip(fn) {
   return function (x) {
@@ -51,22 +39,37 @@ var ease = function ease(fn) {
   };
 };
 
-var index = {
-  quint: ease(function (x) {
-    return x * x * x * x * x;
-  }),
-  quart: ease(function (x) {
-    return x * x * x * x;
-  }),
-  cubic: ease(function (x) {
-    return x * x * x;
-  }),
-  quad: ease(function (x) {
-    return x * x;
-  }),
-  sine: ease(sine),
-  expo: ease(expo),
-  circ: ease(circ)
+// The basic exponential definitions
+var baseNames = ['quad', 'cubic', 'quart', 'quint'];
+var base = baseNames.reduce(function (obj, key, i) {
+  /* eslint-disable no-param-reassign */
+  obj[key] = ease(function (x) {
+    return Math.pow(x, i + 2);
+  });
+
+  return obj;
+}, {});
+
+// The more elaborate scaling formulas
+// From: https://github.com/staltz/xstream/blob/master/src/extra/tween.ts
+var sine = {
+  sine: ease(function (x) {
+    return 1 - Math.cos(x * HALF_PI);
+  })
 };
+
+var expo = {
+  expo: ease(function (x) {
+    return Math.pow(2, 10 * (x - 1));
+  })
+};
+
+var circ = {
+  circ: ease(function (x) {
+    return -1 * (Math.sqrt(1 - x * x) - 1);
+  })
+};
+
+var index = Object.assign(base, sine, expo, circ);
 
 module.exports = index;
