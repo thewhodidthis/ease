@@ -11,11 +11,13 @@ const flip = fn => (x => 1 - fn(1 - x));
 const fork = (a, b) => (x => ((x < 0.5) ? (a(2 * x) * 0.5) : (0.5 + (b(2 * (x - 0.5)) * 0.5))));
 
 // Drive out, in/out from in, band together
+// https://github.com/staltz/xstream/blob/master/src/extra/tween.ts
 const ease = (fn) => {
   const fnOut = flip(fn);
   const fnInOut = fork(fn, fnOut);
 
-  // Feed the slope
+  // Feed each with slope
+  // (current position over duration)
   return {
     in: (t, d) => fn(t / d),
     out: (t, d) => fnOut(t / d),
@@ -24,27 +26,30 @@ const ease = (fn) => {
 };
 
 // The basic exponential definitions
-const baseNames = ['quad', 'cubic', 'quart', 'quint'];
-const base = baseNames.reduce((obj, key, i) => {
+const expoQueue = ['quad', 'cubic', 'quart', 'quint'];
+
+// Collect above
+const expo = expoQueue.reduce((obj, key, i) => {
+  // But for the babel stuff, this would have been
+  // ```Object.assign(obj, { [key]: ... })```
   /* eslint-disable no-param-reassign */
   obj[key] = ease(x => Math.pow(x, i + 2));
 
   return obj;
-}, {});
+}, {
+  // Start here
+  expo: ease(x => Math.pow(2, 10 * (x - 1))),
+});
 
-// The more elaborate scaling formulas
-// From: https://github.com/staltz/xstream/blob/master/src/extra/tween.ts
+// The smooth
 const sine = {
   sine: ease(x => 1 - Math.cos(x * HALF_PI)),
 };
 
-const expo = {
-  expo: ease(x => Math.pow(2, 10 * (x - 1))),
-};
-
+// The snaky
 const circ = {
   circ: ease(x => -1 * (Math.sqrt(1 - (x * x)) - 1)),
 };
 
-export default Object.assign(base, sine, expo, circ);
+export default Object.assign(expo, sine, circ);
 

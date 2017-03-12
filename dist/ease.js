@@ -22,11 +22,13 @@ var ease = (function () {
   };
 
   // Drive out, in/out from in, band together
+  // https://github.com/staltz/xstream/blob/master/src/extra/tween.ts
   var ease = function ease(fn) {
     var fnOut = flip(fn);
     var fnInOut = fork(fn, fnOut);
 
-    // Feed the slope
+    // Feed each with slope
+    // (current position over duration)
     return {
       in: function _in(t, d) {
         return fn(t / d);
@@ -41,37 +43,40 @@ var ease = (function () {
   };
 
   // The basic exponential definitions
-  var baseNames = ['quad', 'cubic', 'quart', 'quint'];
-  var base = baseNames.reduce(function (obj, key, i) {
+  var expoQueue = ['quad', 'cubic', 'quart', 'quint'];
+
+  // Collect above
+  var expo = expoQueue.reduce(function (obj, key, i) {
+    // But for the babel stuff, this would have been
+    // ```Object.assign(obj, { [key]: ... })```
     /* eslint-disable no-param-reassign */
     obj[key] = ease(function (x) {
       return Math.pow(x, i + 2);
     });
 
     return obj;
-  }, {});
+  }, {
+    // Start here
+    expo: ease(function (x) {
+      return Math.pow(2, 10 * (x - 1));
+    })
+  });
 
-  // The more elaborate scaling formulas
-  // From: https://github.com/staltz/xstream/blob/master/src/extra/tween.ts
+  // The smooth
   var sine = {
     sine: ease(function (x) {
       return 1 - Math.cos(x * HALF_PI);
     })
   };
 
-  var expo = {
-    expo: ease(function (x) {
-      return Math.pow(2, 10 * (x - 1));
-    })
-  };
-
+  // The snaky
   var circ = {
     circ: ease(function (x) {
       return -1 * (Math.sqrt(1 - x * x) - 1);
     })
   };
 
-  var index = Object.assign(base, sine, expo, circ);
+  var index = Object.assign(expo, sine, circ);
 
   return index;
 
