@@ -32,7 +32,7 @@
     "lint": "eslint index.es; exit 0",
     "start": "npm run clear && npm run build",
     "docs": "docco -l ivory -e .js index.es",
-    "docs:open": "open docs/index.html",
+    "postdocs": "open docs/index.html",
     "preexample": "npm start",
     "example": "npm run example:link && npm run example:serve",
     "example:link": "ln -siv \"$(pwd)/dist/ease.min.js\" example/ease.js",
