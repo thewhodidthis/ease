@@ -46,8 +46,8 @@ var expoQueue = ['quad', 'cubic', 'quart', 'quint'];
 
 // Collect above
 var expo = expoQueue.reduce(function (obj, key, i) {
-  // But for the babel stuff, this would have been
-  // ```Object.assign(obj, { [key]: ... })```
+  // But for the babel stuff, using computed values for keys would be appropriate
+  // eg. ```Object.assign(obj, { [key]: ease })```
   /* eslint-disable no-param-reassign */
   obj[key] = ease(function (x) {
     return Math.pow(x, i + 2);

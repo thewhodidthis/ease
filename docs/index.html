@@ -161,14 +161,14 @@
             <div class="pilwrap">
               <a class="pilcrow" href="#section-9">&#182;</a>
             </div>
-            <p>But for the babel stuff, this would have been
-<code>Object.assign(obj, { [key]: ... })</code></p>
+            <p>But for the babel stuff, using computed values for keys would be appropriate
+eg. <code>Object.assign(obj, { [key]: ease })</code></p>
 
           </div>
 
           
           <div class="content"><div class='highlight'><pre>  <span class="hljs-comment">/* eslint-disable no-param-reassign */</span>
-  obj[key] = ease(<span class="hljs-function"><span class="hljs-params">x</span> =&gt;</span> <span class="hljs-built_in">Math</span>.pow(x, i + <span class="hljs-number">2</span>));
+  obj[key] = ease(<span class="hljs-function"><span class="hljs-params">x</span> =&gt;</span> x ** (i + <span class="hljs-number">2</span>));
 
   <span class="hljs-keyword">return</span> obj;
 }, {</pre></div></div>
@@ -187,7 +187,7 @@
           </div>
 
           
-          <div class="content"><div class='highlight'><pre>  expo: ease(<span class="hljs-function"><span class="hljs-params">x</span> =&gt;</span> <span class="hljs-built_in">Math</span>.pow(<span class="hljs-number">2</span>, <span class="hljs-number">10</span> * (x - <span class="hljs-number">1</span>))),
+          <div class="content"><div class='highlight'><pre>  expo: ease(<span class="hljs-function"><span class="hljs-params">x</span> =&gt;</span> <span class="hljs-number">2</span> ** (<span class="hljs-number">10</span> * (x - <span class="hljs-number">1</span>))),
 });</pre></div></div>
           
         </li>
