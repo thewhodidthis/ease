@@ -30,15 +30,15 @@ const expoQueue = ['quad', 'cubic', 'quart', 'quint'];
 
 // Collect above
 const expo = expoQueue.reduce((obj, key, i) => {
-  // But for the babel stuff, this would have been
-  // ```Object.assign(obj, { [key]: ... })```
+  // But for the babel stuff, using computed values for keys would be appropriate
+  // eg. ```Object.assign(obj, { [key]: ease })```
   /* eslint-disable no-param-reassign */
-  obj[key] = ease(x => Math.pow(x, i + 2));
+  obj[key] = ease(x => x ** (i + 2));
 
   return obj;
 }, {
   // Start here
-  expo: ease(x => Math.pow(2, 10 * (x - 1))),
+  expo: ease(x => 2 ** (10 * (x - 1))),
 });
 
 // The smooth
