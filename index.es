@@ -12,7 +12,7 @@ const fork = (a, b) => (x => ((x < 0.5) ? (a(2 * x) * 0.5) : (0.5 + (b(2 * (x - 
 
 // Drive out, in/out from in, band together
 // https://github.com/staltz/xstream/blob/master/src/extra/tween.ts
-const ease = (fn) => {
+const from = (fn) => {
   const fnOut = flip(fn);
   const fnInOut = fork(fn, fnOut);
 
@@ -26,30 +26,15 @@ const ease = (fn) => {
 };
 
 // The basic exponential definitions
-const expoQueue = ['quad', 'cubic', 'quart', 'quint'];
-
-// Collect above
-const expo = expoQueue.reduce((obj, key, i) => {
-  // Avoid computed values for now, but of course this could've been
-  // ```Object.assign(obj, { [key]: fn })```
-  /* eslint-disable no-param-reassign */
-  obj[key] = ease(x => x ** (i + 2));
-
-  return obj;
-}, {
-  // Start here
-  expo: ease(x => 2 ** (10 * (x - 1))),
-});
+export const quad = from(x => x ** 2);
+export const cubic = from(x => x ** 3);
+export const quart = from(x => x ** 4);
+export const quint = from(x => x ** 5);
+export const expo = from(x => 2 ** (10 * (x - 1)));
 
 // The smooth
-const sine = {
-  sine: ease(x => 1 - Math.cos(x * HALF_PI)),
-};
+export const sine = from(x => 1 - Math.cos(x * HALF_PI));
 
 // The snaky
-const circ = {
-  circ: ease(x => -1 * (Math.sqrt(1 - (x * x)) - 1)),
-};
-
-export default Object.assign(expo, sine, circ);
+export const circ = from(x => -1 * (Math.sqrt(1 - (x * x)) - 1));
 
