@@ -1,5 +1,7 @@
 'use strict';
 
+Object.defineProperty(exports, '__esModule', { value: true });
+
 // # Ease
 // Helps with the tweens
 
@@ -22,7 +24,7 @@ var fork = function fork(a, b) {
 
 // Drive out, in/out from in, band together
 // https://github.com/staltz/xstream/blob/master/src/extra/tween.ts
-var ease = function ease(fn) {
+var from = function from(fn) {
   var fnOut = flip(fn);
   var fnInOut = fork(fn, fnOut);
 
@@ -32,49 +34,46 @@ var ease = function ease(fn) {
     in: function _in(t, d) {
       return fn(t / d);
     },
-    out: function out(t, d) {
+    out: function _out(t, d) {
       return fnOut(t / d);
     },
-    inOut: function inOut(t, d) {
+    inOut: function _inOut(t, d) {
       return fnInOut(t / d);
     }
   };
 };
 
 // The basic exponential definitions
-var expoQueue = ['quad', 'cubic', 'quart', 'quint'];
-
-// Collect above
-var expo = expoQueue.reduce(function (obj, key, i) {
-  // Avoid computed values for now, but of course this could've been
-  // ```Object.assign(obj, { [key]: fn })```
-  /* eslint-disable no-param-reassign */
-  obj[key] = ease(function (x) {
-    return Math.pow(x, i + 2);
-  });
-
-  return obj;
-}, {
-  // Start here
-  expo: ease(function (x) {
-    return Math.pow(2, 10 * (x - 1));
-  })
+var quad = from(function (x) {
+  return Math.pow(x, 2);
+});
+var cubic = from(function (x) {
+  return Math.pow(x, 3);
+});
+var quart = from(function (x) {
+  return Math.pow(x, 4);
+});
+var quint = from(function (x) {
+  return Math.pow(x, 5);
+});
+var expo = from(function (x) {
+  return Math.pow(2, 10 * (x - 1));
 });
 
 // The smooth
-var sine = {
-  sine: ease(function (x) {
-    return 1 - Math.cos(x * HALF_PI);
-  })
-};
+var sine = from(function (x) {
+  return 1 - Math.cos(x * HALF_PI);
+});
 
 // The snaky
-var circ = {
-  circ: ease(function (x) {
-    return -1 * (Math.sqrt(1 - x * x) - 1);
-  })
-};
+var circ = from(function (x) {
+  return -1 * (Math.sqrt(1 - x * x) - 1);
+});
 
-var index = Object.assign(expo, sine, circ);
-
-module.exports = index;
+exports.quad = quad;
+exports.cubic = cubic;
+exports.quart = quart;
+exports.quint = quint;
+exports.expo = expo;
+exports.sine = sine;
+exports.circ = circ;
