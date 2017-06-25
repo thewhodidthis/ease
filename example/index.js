@@ -23,7 +23,7 @@ var fork = function fork(a, b) {
 
 // Drive out, in/out from in, band together
 // https://github.com/staltz/xstream/blob/master/src/extra/tween.ts
-var ease = function ease(fn) {
+var from = function from(fn) {
   var fnOut = flip(fn);
   var fnInOut = fork(fn, fnOut);
 
@@ -43,33 +43,33 @@ var ease = function ease(fn) {
 };
 
 // The basic exponential definitions
-var quad = ease(function (x) {
+var quad = from(function (x) {
   return Math.pow(x, 2);
 });
-var cubic = ease(function (x) {
+var cubic = from(function (x) {
   return Math.pow(x, 3);
 });
-var quart = ease(function (x) {
+var quart = from(function (x) {
   return Math.pow(x, 4);
 });
-var quint = ease(function (x) {
+var quint = from(function (x) {
   return Math.pow(x, 5);
 });
-var expo = ease(function (x) {
+var expo = from(function (x) {
   return Math.pow(2, 10 * (x - 1));
 });
 
 // The smooth
-var sine = ease(function (x) {
+var sine = from(function (x) {
   return 1 - Math.cos(x * HALF_PI);
 });
 
 // The snaky
-var circ = ease(function (x) {
+var circ = from(function (x) {
   return -1 * (Math.sqrt(1 - x * x) - 1);
 });
 
-var ease$1 = Object.freeze({
+var ease = Object.freeze({
 	quad: quad,
 	cubic: cubic,
 	quart: quart,
@@ -145,14 +145,17 @@ var data = {
   }
 };
 
-var types = Object.keys(data);
+var ofInterest = ['quad', 'quint', 'expo', 'circ'];
+var types = Object.keys(data).filter(function (val) {
+  return ofInterest.indexOf(val) !== -1;
+});
 var paths = 'in,out,inOut'.split(',');
 
 var totalPaths = paths.length;
 var totalTypes = types.length;
-var total = totalTypes * totalPaths;
+var totalGrand = totalTypes * totalPaths;
 
-for (var i = 0; i < total; i += 1) {
+for (var i = 0; i < totalGrand; i += 1) {
   var type = types[i % totalTypes];
   var path = paths[Math.floor(i / totalTypes)];
 
@@ -160,7 +163,7 @@ for (var i = 0; i < total; i += 1) {
   var turf = papa.firstChild.getContext('2d');
 
   var points = data[type][path].join(', ');
-  var easing = ease$1[type][path];
+  var easing = ease[type][path];
 
   papa.setAttribute('data-ease', type + '.' + path);
   papa.setAttribute('style', 'transition-timing-function: cubic-bezier(' + points + ');');
