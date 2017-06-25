@@ -101,9 +101,6 @@ var plot = function plot(buffer, easing) {
   }
 };
 
-var list = document.querySelector('ul');
-var adam = list.removeChild(list.querySelector('li'));
-
 // Cubic bezier control point approximations for Penner's equations
 // From: https://github.com/zz85/cubic-bezier-approximations
 // Also: https://github.com/KinkumaDesign/CustomMediaTimingFunction
@@ -146,10 +143,14 @@ var data = {
 };
 
 var ofInterest = ['quad', 'quint', 'expo', 'circ'];
+
+var paths = 'in,out,inOut'.split(',');
 var types = Object.keys(data).filter(function (val) {
   return ofInterest.indexOf(val) !== -1;
 });
-var paths = 'in,out,inOut'.split(',');
+
+var list = document.querySelector('ul');
+var adam = list.removeChild(list.querySelector('li'));
 
 var totalPaths = paths.length;
 var totalTypes = types.length;
@@ -160,7 +161,7 @@ for (var i = 0; i < totalGrand; i += 1) {
   var path = paths[Math.floor(i / totalTypes)];
 
   var papa = adam.cloneNode(true);
-  var turf = papa.firstChild.getContext('2d');
+  var turf = papa.querySelector('canvas').getContext('2d');
 
   var points = data[type][path].join(', ');
   var easing = ease[type][path];
