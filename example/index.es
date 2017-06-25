@@ -66,14 +66,16 @@ const data = {
   },
 };
 
-const types = Object.keys(data);
+const ofInterest = ['quad', 'quint', 'expo', 'circ'];
+
 const paths = 'in,out,inOut'.split(',');
+const types = Object.keys(data).filter(val => ofInterest.indexOf(val) !== -1);
 
 const totalPaths = paths.length;
 const totalTypes = types.length;
-const total = totalTypes * totalPaths;
+const totalGrand = totalTypes * totalPaths;
 
-for (let i = 0; i < total; i += 1) {
+for (let i = 0; i < totalGrand; i += 1) {
   const type = types[i % totalTypes];
   const path = paths[Math.floor(i / totalTypes)];
 
