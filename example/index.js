@@ -79,28 +79,6 @@ var ease = Object.freeze({
 	circ: circ
 });
 
-var TAU = Math.PI * 2;
-var plot = function plot(buffer, easing) {
-  var w = buffer.canvas.width;
-  var h = buffer.canvas.height;
-  var g = 10;
-  var d = 3;
-
-  for (var x = g, n = w - g; x < n; x += d) {
-    var y = easing(x, n) * (h - 2 * g);
-
-    buffer.save();
-    buffer.translate(0, h - g);
-    buffer.scale(1, -1);
-
-    buffer.beginPath();
-    buffer.arc(x, y, 1, 0, TAU);
-    buffer.fill();
-
-    buffer.restore();
-  }
-};
-
 // Cubic bezier control point approximations for Penner's equations
 // From: https://github.com/zz85/cubic-bezier-approximations
 // Also: https://github.com/KinkumaDesign/CustomMediaTimingFunction
@@ -139,6 +117,28 @@ var data = {
     in: [0.54, 0, 1, 0.44],
     out: [0, 0.56, 0.46, 1],
     inOut: [0.88, 0.14, 0.12, 0.86]
+  }
+};
+
+var TAU = Math.PI * 2;
+var plot = function plot(buffer, easing) {
+  var w = buffer.canvas.width;
+  var h = buffer.canvas.height;
+  var g = 10;
+  var d = 3;
+
+  for (var x = g, n = w - g; x < n; x += d) {
+    var y = easing(x, n) * (h - 2 * g);
+
+    buffer.save();
+    buffer.translate(0, h - g);
+    buffer.scale(1, -1);
+
+    buffer.beginPath();
+    buffer.arc(x, y, 1, 0, TAU);
+    buffer.fill();
+
+    buffer.restore();
   }
 };
 
