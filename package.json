@@ -17,16 +17,12 @@
   "bugs": {
     "url": "https://github.com/thewhodidthis/ease/issues"
   },
-  "directories": {
-    "example": "example"
-  },
   "config": {
     "remote": "thewhodidthis@zazie:www/example/ease/"
   },
   "scripts": {
     "test": "node test",
     "lint": "eslint . example --ext .es test/*.js",
-    "docs": "docco -e .js -l ivory index.es",
     "start": "rollup -c && uglifyjs dist/ease.js -cmo dist/ease.min.js",
     "example": "npm run example:build && npm run example:serve",
     "example:build": "rollup -c -i example/index.es -f iife -o example/index.js",
@@ -43,7 +39,6 @@
     "babel-plugin-external-helpers": "latest",
     "babel-plugin-transform-exponentiation-operator": "latest",
     "babel-preset-latest": "latest",
-    "docco": "github:67656e65726963/docco",
     "eslint": "^3.19.0",
     "eslint-config-airbnb-base": "latest",
     "eslint-plugin-import": "latest",
