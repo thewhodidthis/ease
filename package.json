@@ -1,6 +1,6 @@
 {
   "name": "@thewhodidthis/ease",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Just another bunch of easing helpers",
   "main": "index.js",
   "module": "index.es",
