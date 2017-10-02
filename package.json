@@ -3,7 +3,7 @@
   "version": "1.0.5",
   "description": "Just another bunch of easing helpers",
   "main": "index.js",
-  "module": "index.es",
+  "module": "index.mjs",
   "homepage": "https://github.com/thewhodidthis/ease#readme",
   "repository": {
     "type": "git",
@@ -15,9 +15,9 @@
   "scripts": {
     "pretest": "eslint test.js",
     "test": "node test",
-    "prestart": "eslint index.es",
-    "start": "rollup -f cjs index.es | buble > index.js",
-    "preexample": "cd example; eslint . --ext es,js --ignore-pattern index.js",
+    "prestart": "eslint index.mjs",
+    "start": "rollup -f cjs index.mjs | buble > index.js",
+    "preexample": "eslint example --ext es,js --ignore-pattern index.js",
     "example": "cd example; rollup -f iife index.es | buble > index.js",
     "postexample": "open example/index.html"
   },

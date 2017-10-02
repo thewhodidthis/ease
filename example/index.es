@@ -1,5 +1,5 @@
+import * as ease from '../index.mjs'
 import data from './data.js'
-import * as ease from '../index.es'
 
 const TAU = Math.PI * 2
 const plot = (buffer, easing) => {
