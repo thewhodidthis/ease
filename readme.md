@@ -3,11 +3,11 @@
 
 ### Setup
 ```sh
-npm install thewhodidthis/ease
+# Fetch latest from github
+npm i thewhodidthis/ease
 ```
 
 ### Usage
 ```js
-import * as ease from '@thewhodidthis/ease';
+import * as ease from '@thewhodidthis/ease'
 ```
-
