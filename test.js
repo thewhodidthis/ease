@@ -1,4 +1,6 @@
-const test = require('tape')
+'use strict'
+
+const { ok, equal } = require('tapeless')
 const ease = require('./')
 
 const sub = (a, b) => a - b
@@ -28,71 +30,69 @@ const runner = (easing) => {
 const easingTypes = 'sine,quad,cubic,circ,quart,quint,expo'.split(',')
 const easings = easingTypes.map(v => ease[v])
 
-test('will trend as expected', (t) => {
-  const easeIn = easings.map(v => v.in)
-  const easeOut = easings.map(v => v.out)
-  const easeInOut = easings.map(v => v.inOut)
+ok(true, null, 'will trend as expected')
 
-  // Each type produces an aggregate stronger than the previous one
-  const increasing = easeIn.map(runner).map(summer).reduce((a, b, i) => {
-    const typeA = easingTypes[i - 1]
-    const typeB = easingTypes[i]
+const easeIn = easings.map(v => v.in)
+const easeOut = easings.map(v => v.out)
+const easeInOut = easings.map(v => v.inOut)
 
-    t.ok(b > a, `Ease in ${typeA} softer than ${typeB}`)
+// Each type produces an aggregate stronger than the previous one
+const increasing = easeIn.map(runner).map(summer).reduce((a, b, i) => {
+  const typeA = easingTypes[i - 1]
+  const typeB = easingTypes[i]
 
-    return b
-  })
+  ok(b > a, `ease in ${typeA} softer than ${typeB}`)
 
-  // Ease in: sum is positive
-  t.ok(increasing > 0, 'Ease in goes positive')
+  return b
+})
 
-  // Each type produces an aggregate stronger than the previous one
-  const decreasing = easeOut.map(runner).map(summer).reduce((a, b, i) => {
-    const typeA = easingTypes[i - 1]
-    const typeB = easingTypes[i]
+// Ease in: sum is positive
+ok(increasing > 0, 'ease in goes positive')
 
-    // These are negative
-    t.ok(a > b, `Ease out ${typeA} softer than ${typeB}`)
+// Each type produces an aggregate stronger than the previous one
+const decreasing = easeOut.map(runner).map(summer).reduce((a, b, i) => {
+  const typeA = easingTypes[i - 1]
+  const typeB = easingTypes[i]
 
-    return b
-  })
+  // These are negative
+  ok(a > b, `ease out ${typeA} softer than ${typeB}`)
 
-  // Ease out: sum is negative
-  t.ok(decreasing < 0, 'Ease out goes negative')
+  return b
+})
 
-  easeInOut.map(runner).map((v, i) => {
-    const type = easingTypes[i]
+// Ease out: sum is negative
+ok(decreasing < 0, 'ease out goes negative')
 
-    // This'll be empty at the end of each iteration
-    const target = Array.from(v)
+easeInOut.map(runner).map((v, i) => {
+  const type = easingTypes[i]
 
-    // Going faster
-    const shiftL = target.splice(0, target.length * 0.5)
+  // This'll be empty at the end of each iteration
+  const target = Array.from(v)
 
-    // Going slower
-    const shiftR = target.splice(0, target.length)
+  // Going faster
+  const shiftL = target.splice(0, target.length * 0.5)
 
-    const trendL = shiftL.reduce(sum)
-    const trendR = shiftR.reduce(sum)
+  // Going slower
+  const shiftR = target.splice(0, target.length)
 
-    t.ok(trendL > 0, `Ease in/out ${type} in goes positive`)
-    t.ok(trendR < 0, `Ease in/out ${type} out goes negative`)
+  const trendL = shiftL.reduce(sum)
+  const trendR = shiftR.reduce(sum)
 
-    t.notOk(Math.round(trendL + trendR), `Ease in/out ${type} parts look similar`)
+  ok(trendL > 0, `ease in/out ${type} in goes positive`)
+  ok(trendR < 0, `ease in/out ${type} out goes negative`)
 
-    return [trendL, trendR]
-  }).reduce((a, b, i) => {
-    const typeA = easingTypes[i - 1]
-    const typeB = easingTypes[i]
+  equal(Math.round(trendL + trendR), 0, `ease in/out ${type} parts look similar`)
 
-    const [a1, a2] = a
-    const [b1, b2] = b
+  return [trendL, trendR]
+}).reduce((a, b, i) => {
+  const typeA = easingTypes[i - 1]
+  const typeB = easingTypes[i]
 
-    t.ok(a1 < b1, `Ease in/out ${typeA} in softer than ${typeB}`)
-    t.ok(a2 > b2, `Ease in/out ${typeA} out softer than ${typeB}`)
+  const [a1, a2] = a
+  const [b1, b2] = b
 
-    return b
-  })
+  ok(a1 < b1, `ease in/out ${typeA} in softer than ${typeB}`)
+  ok(a2 > b2, `ease in/out ${typeA} out softer than ${typeB}`)
 
-  t.end()
+  return b
 })
