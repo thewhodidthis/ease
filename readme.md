@@ -10,6 +10,6 @@ npm i thewhodidthis/ease
 ```js
 import * as ease from '@thewhodidthis/ease'
 
-// Sports quad, cubic, quart, quint, expo, sine, circ (in, out, in/out)
+// Sports quad/cubic/quart/quint/expo/sine/circ (in, out, in/out)
 Object.keys(ease).forEach((k) => { console.log(k) })
 ```
