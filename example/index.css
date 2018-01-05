@@ -99,6 +99,10 @@ li:nth-child(4n) {
   margin-right: 0;
 }
 
+li:nth-child(8+n) {
+  margin-bottom: 0;
+}
+
 canvas {
   display: block;
   position: relative;
