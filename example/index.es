@@ -26,7 +26,7 @@ const plot = (buffer, easing) => {
 const ofInterest = ['quad', 'quint', 'expo', 'circ']
 
 const paths = 'in,out,inOut'.split(',')
-const types = Object.keys(data).filter(val => ofInterest.indexOf(val) !== -1)
+const types = Object.keys(data).filter(v => ofInterest.indexOf(v) !== -1)
 
 const list = document.querySelector('ul')
 const adam = list.removeChild(list.querySelector('li'))

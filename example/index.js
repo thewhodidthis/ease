@@ -118,7 +118,7 @@ var plot = function (buffer, easing) {
 var ofInterest = ['quad', 'quint', 'expo', 'circ'];
 
 var paths = 'in,out,inOut'.split(',');
-var types = Object.keys(data).filter(function (val) { return ofInterest.indexOf(val) !== -1; });
+var types = Object.keys(data).filter(function (v) { return ofInterest.indexOf(v) !== -1; });
 
 var list = document.querySelector('ul');
 var adam = list.removeChild(list.querySelector('li'));
