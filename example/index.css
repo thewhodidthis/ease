@@ -40,21 +40,21 @@ figcaption {
 }
 
 ul {
+  background: #000;
+  color: #fff;
   height: 360px;
   list-style: none;
   margin: 0;
   overflow: hidden;
   padding: 0;
+  position: relative;
   width: 640px;
 }
 
 li {
-  border: 1px solid #000;
   display: block;
   float: left;
-  line-height: 0;
-  margin: 0 24px 24px 0;
-  overflow: hidden;
+  margin: 0.5rem;
   position: relative;
 }
 
@@ -63,48 +63,14 @@ li::after {
   cursor: pointer;
   display: inline-block;
   left: 2px;
-  padding: 0.25rem;
+  letter-spacing: 1px;
   position: absolute;
-  top: 2px;
-  font: bold 0.6875rem/1 sans-serif;
+  top: 0;
+  font: normal 0.6875rem/1 sans-serif;
   z-index: 101;
 }
 
-li::before {
-  background: #ff0;
-  border-radius: 50%;
-  content: "";
-  height: 0;
-  left: 50%;
-  position: absolute;
-  transform: translate(-50%, -50%);
-  transition: width 0.3s, height 0.3s;
-  transition-timing-function: inherit;
-  top: 50%;
-  width: 0;
-  z-index: 0;
-}
-
-li:hover::before {
-  height: 180px;
-  transition-duration: 0.5s;
-  width: 180px;
-}
-
-li:only-child {
-  display: none;
-}
-
-li:nth-child(4n) {
-  margin-right: 0;
-}
-
-li:nth-child(8+n) {
-  margin-bottom: 0;
-}
-
-canvas {
+canvas,
+img {
   display: block;
-  position: relative;
-  z-index: 1;
 }
