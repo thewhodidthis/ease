@@ -52,98 +52,51 @@ var ease = Object.freeze({
 	circ: circ
 });
 
-// Cubic bezier control point approximations for Penner's equations
-// From: https://github.com/zz85/cubic-bezier-approximations
-// Also: https://github.com/KinkumaDesign/CustomMediaTimingFunction
-var data = {
-  quad: {
-    in: [0.26, 0, 0.6, 0.2],
-    out: [0.4, 0.8, 0.74, 1],
-    inOut: [0.48, 0.04, 0.52, 0.96]
-  },
-  cubic: {
-    in: [0.4, 0, 0.68, 0.06],
-    out: [0.32, 0.94, 0.6, 1],
-    inOut: [0.66, 0, 0.34, 1]
-  },
-  quart: {
-    in: [0.52, 0, 0.74, 0],
-    out: [0.26, 1, 0.48, 1],
-    inOut: [0.76, 0, 0.24, 1]
-  },
-  quint: {
-    in: [0.64, 0, 0.78, 0],
-    out: [0.22, 1, 0.36, 1],
-    inOut: [0.84, 0, 0.16, 1]
-  },
-  sine: {
-    in: [0.32, 0, 0.6, 0.36],
-    out: [0.4, 0.64, 0.68, 1],
-    inOut: [0.36, 0, 0.64, 1]
-  },
-  expo: {
-    in: [0.66, 0, 0.86, 0],
-    out: [0.14, 1, 0.34, 1],
-    inOut: [0.9, 0, 0.1, 1]
-  },
-  circ: {
-    in: [0.54, 0, 1, 0.44],
-    out: [0, 0.56, 0.46, 1],
-    inOut: [0.88, 0.14, 0.12, 0.86]
-  }
+var draw = function (plot, easing) {
+  var ref = plot.canvas;
+  var w = ref.width;
+  var h = ref.height;
+
+  plot.strokeStyle = 'white';
+
+  var next = function (x) {
+    if (x > w) {
+      return
+    }
+
+    var y = easing(x, w) * (h - 12);
+
+    plot.save();
+    plot.translate(0, h);
+    plot.scale(1, -1);
+
+    plot.moveTo(x + 0.5, y - h);
+    plot.lineTo(x + 0.5, y);
+    plot.restore();
+    plot.stroke();
+
+    next(x + 4);
+  };
+
+  next(3);
 };
 
-var TAU = Math.PI * 2;
-var plot = function (buffer, easing) {
-  var w = buffer.canvas.width;
-  var h = buffer.canvas.height;
-  var g = 10;
-  var d = 3;
+var paths = 'in inOut out'.split(' ');
+var types = 'quad quint expo circ'.split(' ');
+var total = types.length;
 
-  for (var x = g, n = w - g; x < n; x += d) {
-    var y = easing(x, n) * (h - (2 * g));
+var items = document.querySelectorAll('li');
 
-    buffer.save();
-    buffer.translate(0, h - g);
-    buffer.scale(1, -1);
+Array.from(items).forEach(function (item, i) {
+  var plot = item.querySelector('canvas').getContext('2d');
 
-    buffer.beginPath();
-    buffer.arc(x, y, 1, 0, TAU);
-    buffer.fill();
+  var type = types[i % total];
+  var path = paths[Math.floor(i / total)];
 
-    buffer.restore();
-  }
-};
+  item.setAttribute('data-ease', (type + "." + path));
 
-var ofInterest = ['quad', 'quint', 'expo', 'circ'];
-
-var paths = 'in,out,inOut'.split(',');
-var types = Object.keys(data).filter(function (v) { return ofInterest.indexOf(v) !== -1; });
-
-var list = document.querySelector('ul');
-var adam = list.removeChild(list.querySelector('li'));
-
-var totalPaths = paths.length;
-var totalTypes = types.length;
-var totalGrand = totalTypes * totalPaths;
-
-for (var i = 0; i < totalGrand; i += 1) {
-  var type = types[i % totalTypes];
-  var path = paths[Math.floor(i / totalTypes)];
-
-  var papa = adam.cloneNode(true);
-  var turf = papa.querySelector('canvas').getContext('2d');
-
-  var points = data[type][path].join(', ');
-  var easing = ease[type][path];
-
-  papa.setAttribute('data-ease', (type + "." + path));
-  papa.setAttribute('style', ("transition-timing-function: cubic-bezier(" + points + ");"));
-
-  list.appendChild(papa);
-
-  plot(turf, easing);
-}
+  draw(plot, ease[type][path]);
+});
 
 }());
 

@@ -1,54 +1,45 @@
 import * as ease from '../index.mjs'
-import data from './data.js'
 
-const TAU = Math.PI * 2
-const plot = (buffer, easing) => {
-  const w = buffer.canvas.width
-  const h = buffer.canvas.height
-  const g = 10
-  const d = 3
+const draw = (plot, easing) => {
+  const { width: w, height: h } = plot.canvas
 
-  for (let x = g, n = w - g; x < n; x += d) {
-    const y = easing(x, n) * (h - (2 * g))
+  plot.strokeStyle = 'white'
 
-    buffer.save()
-    buffer.translate(0, h - g)
-    buffer.scale(1, -1)
+  const next = (x) => {
+    if (x > w) {
+      return
+    }
 
-    buffer.beginPath()
-    buffer.arc(x, y, 1, 0, TAU)
-    buffer.fill()
+    const y = easing(x, w) * (h - 12)
 
-    buffer.restore()
+    plot.save()
+    plot.translate(0, h)
+    plot.scale(1, -1)
+
+    plot.moveTo(x + 0.5, y - h)
+    plot.lineTo(x + 0.5, y)
+    plot.restore()
+    plot.stroke()
+
+    next(x + 4)
   }
+
+  next(3)
 }
 
-const ofInterest = ['quad', 'quint', 'expo', 'circ']
+const paths = 'in inOut out'.split(' ')
+const types = 'quad quint expo circ'.split(' ')
+const total = types.length
 
-const paths = 'in,out,inOut'.split(',')
-const types = Object.keys(data).filter(v => ofInterest.indexOf(v) !== -1)
+const items = document.querySelectorAll('li')
 
-const list = document.querySelector('ul')
-const adam = list.removeChild(list.querySelector('li'))
+Array.from(items).forEach((item, i) => {
+  const plot = item.querySelector('canvas').getContext('2d')
 
-const totalPaths = paths.length
-const totalTypes = types.length
-const totalGrand = totalTypes * totalPaths
+  const type = types[i % total]
+  const path = paths[Math.floor(i / total)]
 
-for (let i = 0; i < totalGrand; i += 1) {
-  const type = types[i % totalTypes]
-  const path = paths[Math.floor(i / totalTypes)]
+  item.setAttribute('data-ease', `${type}.${path}`)
 
-  const papa = adam.cloneNode(true)
-  const turf = papa.querySelector('canvas').getContext('2d')
-
-  const points = data[type][path].join(', ')
-  const easing = ease[type][path]
-
-  papa.setAttribute('data-ease', `${type}.${path}`)
-  papa.setAttribute('style', `transition-timing-function: cubic-bezier(${points});`)
-
-  list.appendChild(papa)
-
-  plot(turf, easing)
-}
+  draw(plot, ease[type][path])
+})
