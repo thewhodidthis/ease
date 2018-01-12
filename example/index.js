@@ -57,28 +57,27 @@ var draw = function (plot, easing) {
   var w = ref.width;
   var h = ref.height;
 
-  plot.strokeStyle = 'white';
+  var c = { x: w * 0.5, y: h * 0.5 }
 
-  var next = function (x) {
-    if (x > w) {
+  plot.translate(c.x, c.y)
+  plot.rotate(Math.PI * 0.25)
+
+  var next = function (x = h, i = 0) {
+    if (x < 0) {
       return
     }
 
-    var y = easing(x, w) * (h - 12);
+    var y = easing(x, h) * h * 0.625
 
-    plot.save();
-    plot.translate(0, h);
-    plot.scale(1, -1);
+    plot.fillStyle = i % 2 === 0 ? '#888' : '#000'
 
-    plot.moveTo(x + 0.5, y - h);
-    plot.lineTo(x + 0.5, y);
-    plot.restore();
-    plot.stroke();
+    plot.fillRect(-y * 0.5, -y * 0.5, y, y)
+    plot.rotate(y * 0.001)
 
-    next(x + 4);
+    next(x - 5, i + 1);
   };
 
-  next(3);
+  next();
 };
 
 var paths = 'in inOut out'.split(' ');
