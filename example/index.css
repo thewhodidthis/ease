@@ -47,30 +47,24 @@ ul {
   margin: 0;
   overflow: hidden;
   padding: 0;
-  position: relative;
   width: 640px;
 }
 
 li {
   display: block;
   float: left;
-  /* margin: 0.5rem; */
   position: relative;
 }
 
-li::after {
-  /* color: #f00; */
+li::before {
   content: attr(data-ease);
-  cursor: pointer;
-  display: inline-block;
+  display: block;
+  font: normal 0.6875rem/1 sans-serif;
   left: 2px;
   letter-spacing: 1px;
   padding: 0.5rem;
   position: absolute;
   top: 0;
-  font: normal 0.6875rem/1 sans-serif;
-  font: bold 0.6875rem/1 sans-serif;
-  z-index: 101;
 }
 
 canvas,
