@@ -59,8 +59,9 @@ li {
 li::before {
   content: attr(data-ease);
   display: block;
-  font: normal 0.6875rem/1 sans-serif;
+  font-size: 0.6875rem;
   left: 2px;
+  line-height: 1;
   letter-spacing: 1px;
   padding: 0.5rem;
   position: absolute;
