@@ -52,27 +52,28 @@ var ease = Object.freeze({
 	circ: circ
 });
 
-var draw = function (plot, easing) {
-  var ref = plot.canvas;
+var draw = function (buffer, easing) {
+  var ref = buffer.canvas;
   var w = ref.width;
   var h = ref.height;
 
-  var c = { x: w * 0.5, y: h * 0.5 }
+  buffer.translate(w * 0.5, h * 0.5);
+  buffer.rotate(Math.PI * 0.25);
 
-  plot.translate(c.x, c.y)
-  plot.rotate(Math.PI * 0.25)
+  var next = function (x, i) {
+    if ( x === void 0 ) x = h;
+    if ( i === void 0 ) i = 0;
 
-  var next = function (x = h, i = 0) {
     if (x < 0) {
       return
     }
 
-    var y = easing(x, h) * h * 0.625
+    var y = easing(x, h) * h * 0.625;
 
-    plot.fillStyle = i % 2 === 0 ? '#888' : '#000'
+    buffer.fillStyle = i % 2 === 0 ? '#888' : '#000';
 
-    plot.fillRect(-y * 0.5, -y * 0.5, y, y)
-    plot.rotate(y * 0.001)
+    buffer.fillRect(-y * 0.5, -y * 0.5, y, y);
+    buffer.rotate(y * 0.001);
 
     next(x - 5, i + 1);
   };

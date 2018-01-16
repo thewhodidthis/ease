@@ -72,3 +72,7 @@ canvas,
 img {
   display: block;
 }
+
+canvas {
+  background: #000;
+}

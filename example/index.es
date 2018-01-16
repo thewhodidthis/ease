@@ -1,30 +1,27 @@
 import * as ease from '../index.mjs'
 
-const draw = (plot, easing) => {
-  const { width: w, height: h } = plot.canvas
+const draw = (buffer, easing) => {
+  const { width: w, height: h } = buffer.canvas
 
-  plot.strokeStyle = 'white'
+  buffer.translate(w * 0.5, h * 0.5)
+  buffer.rotate(Math.PI * 0.25)
 
-  const next = (x) => {
-    if (x > w) {
+  const next = (x = h, i = 0) => {
+    if (x < 0) {
       return
     }
 
-    const y = easing(x, w) * (h - 12)
+    const y = easing(x, h) * h * 0.625
 
-    plot.save()
-    plot.translate(0, h)
-    plot.scale(1, -1)
+    buffer.fillStyle = i % 2 === 0 ? '#888' : '#000'
 
-    plot.moveTo(x + 0.5, y - h)
-    plot.lineTo(x + 0.5, y)
-    plot.restore()
-    plot.stroke()
+    buffer.fillRect(-y * 0.5, -y * 0.5, y, y)
+    buffer.rotate(y * 0.001)
 
-    next(x + 4)
+    next(x - 5, i + 1)
   }
 
-  next(3)
+  next()
 }
 
 const paths = 'in inOut out'.split(' ')
