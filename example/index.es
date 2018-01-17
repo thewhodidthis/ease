@@ -1,22 +1,22 @@
 import * as ease from '../index.mjs'
 
-const draw = (buffer, easing) => {
-  const { width: w, height: h } = buffer.canvas
+const draw = (target, source) => {
+  const { width: w, height: h } = target.canvas
 
-  buffer.translate(w * 0.5, h * 0.5)
-  buffer.rotate(Math.PI * 0.25)
+  target.translate(w * 0.5, h * 0.5)
+  target.rotate(Math.PI * 0.25)
 
   const next = (x = h, i = 0) => {
     if (x < 0) {
       return
     }
 
-    const y = easing(x, h) * h * 0.625
+    const y = source(x, h) * h * 0.625
 
-    buffer.fillStyle = i % 2 === 0 ? '#888' : '#000'
+    target.fillStyle = i % 2 === 0 ? '#888' : '#000'
 
-    buffer.fillRect(-y * 0.5, -y * 0.5, y, y)
-    buffer.rotate(y * 0.001)
+    target.fillRect(-y * 0.5, -y * 0.5, y, y)
+    target.rotate(y * 0.001)
 
     next(x - 5, i + 1)
   }

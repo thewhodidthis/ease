@@ -52,13 +52,13 @@ var ease = Object.freeze({
 	circ: circ
 });
 
-var draw = function (buffer, easing) {
-  var ref = buffer.canvas;
+var draw = function (target, source) {
+  var ref = target.canvas;
   var w = ref.width;
   var h = ref.height;
 
-  buffer.translate(w * 0.5, h * 0.5);
-  buffer.rotate(Math.PI * 0.25);
+  target.translate(w * 0.5, h * 0.5);
+  target.rotate(Math.PI * 0.25);
 
   var next = function (x, i) {
     if ( x === void 0 ) x = h;
@@ -68,12 +68,12 @@ var draw = function (buffer, easing) {
       return
     }
 
-    var y = easing(x, h) * h * 0.625;
+    var y = source(x, h) * h * 0.625;
 
-    buffer.fillStyle = i % 2 === 0 ? '#888' : '#000';
+    target.fillStyle = i % 2 === 0 ? '#888' : '#000';
 
-    buffer.fillRect(-y * 0.5, -y * 0.5, y, y);
-    buffer.rotate(y * 0.001);
+    target.fillRect(-y * 0.5, -y * 0.5, y, y);
+    target.rotate(y * 0.001);
 
     next(x - 5, i + 1);
   };
