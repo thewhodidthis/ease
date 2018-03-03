@@ -26,11 +26,11 @@ const from = (fn) => {
 }
 
 // The basic exponential definitions
-export const quad = from(x => x ** 2)
-export const cubic = from(x => x ** 3)
-export const quart = from(x => x ** 4)
-export const quint = from(x => x ** 5)
-export const expo = from(x => 2 ** (10 * (x - 1)))
+export const quad = from(x => Math.pow(x, 2))
+export const cubic = from(x => Math.pow(x, 3))
+export const quart = from(x => Math.pow(x, 4))
+export const quint = from(x => Math.pow(x, 5))
+export const expo = from(x => Math.pow(2, (10 * (x - 1))))
 
 // The smooth
 export const sine = from(x => 1 - Math.cos(x * HALF_PI))
