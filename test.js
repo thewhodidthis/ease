@@ -30,8 +30,6 @@ const runner = (easing) => {
 const easingTypes = 'sine,quad,cubic,circ,quart,quint,expo'.split(',')
 const easings = easingTypes.map(v => ease[v])
 
-ok(true, null, 'will trend as expected')
-
 const easeIn = easings.map(v => v.in)
 const easeOut = easings.map(v => v.out)
 const easeInOut = easings.map(v => v.inOut)
@@ -41,13 +39,13 @@ const increasing = easeIn.map(runner).map(summer).reduce((a, b, i) => {
   const typeA = easingTypes[i - 1]
   const typeB = easingTypes[i]
 
-  ok(b > a, `ease in ${typeA} softer than ${typeB}`)
+  ok.describe(`ease in ${typeA} softer than ${typeB}`).test(b > a)
 
   return b
 })
 
 // Ease in: sum is positive
-ok(increasing > 0, 'ease in goes positive')
+ok.describe('ease in goes positive').test(increasing > 0)
 
 // Each type produces an aggregate stronger than the previous one
 const decreasing = easeOut.map(runner).map(summer).reduce((a, b, i) => {
@@ -55,13 +53,13 @@ const decreasing = easeOut.map(runner).map(summer).reduce((a, b, i) => {
   const typeB = easingTypes[i]
 
   // These are negative
-  ok(a > b, `ease out ${typeA} softer than ${typeB}`)
+  ok.describe(`ease out ${typeA} softer than ${typeB}`).test(a > b)
 
   return b
 })
 
 // Ease out: sum is negative
-ok(decreasing < 0, 'ease out goes negative')
+ok.describe('ease out goes negative').test(decreasing < 0)
 
 easeInOut.map(runner).map((v, i) => {
   const type = easingTypes[i]
@@ -78,10 +76,12 @@ easeInOut.map(runner).map((v, i) => {
   const trendL = shiftL.reduce(sum)
   const trendR = shiftR.reduce(sum)
 
-  ok(trendL > 0, `ease in/out ${type} in goes positive`)
-  ok(trendR < 0, `ease in/out ${type} out goes negative`)
+  ok.describe(`ease in/out ${type} in goes positive`).test(trendL > 0)
+  ok.describe(`ease in/out ${type} out goes negative`).test(trendR < 0)
 
-  equal(Math.round(trendL + trendR), 0, `ease in/out ${type} parts look similar`)
+  equal
+    .describe(`ease in/out ${type} parts look similar`)
+    .test(Math.round(trendL + trendR), 0)
 
   return [trendL, trendR]
 }).reduce((a, b, i) => {
@@ -91,8 +91,8 @@ easeInOut.map(runner).map((v, i) => {
   const [a1, a2] = a
   const [b1, b2] = b
 
-  ok(a1 < b1, `ease in/out ${typeA} in softer than ${typeB}`)
-  ok(a2 > b2, `ease in/out ${typeA} out softer than ${typeB}`)
+  ok.describe(`ease in/out ${typeA} in softer than ${typeB}`).test(a1 < b1)
+  ok.describe(`ease in/out ${typeA} out softer than ${typeB}`).test(a2 > b2)
 
   return b
 })
