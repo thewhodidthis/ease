@@ -42,10 +42,10 @@ const sine = from(x => 1 - Math.cos(x * HALF_PI));
 // The snaky
 const circ = from(x => -1 * (Math.sqrt(1 - (x * x)) - 1));
 
-exports.quad = quad;
+exports.circ = circ;
 exports.cubic = cubic;
+exports.expo = expo;
+exports.quad = quad;
 exports.quart = quart;
 exports.quint = quint;
-exports.expo = expo;
 exports.sine = sine;
-exports.circ = circ;
