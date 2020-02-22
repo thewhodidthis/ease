@@ -1,12 +1,13 @@
 html {
   font: 16px/1.25 arial, sans-serif;
+  height: 100%;
 }
 
 body {
-  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
   margin: 0;
-  overflow: hidden;
-  padding: 0.5rem;
+  min-height: 100%;
 }
 
 a {
@@ -18,36 +19,28 @@ a:hover {
   text-decoration: underline;
 }
 
-small {
-  font-size: 0.75rem;
-}
-
 p {
   font-size: 0.875rem;
   margin: 0;
 }
 
 figure {
-  left: 50%;
-  margin: -180px 0 0 -320px;
-  position: absolute;
-  text-align: center;
-  top: 50%;
+  margin: auto;
+  max-width: 640px;
 }
 
 figcaption {
   margin: 0.5rem 0 0;
+  text-align: center;
 }
 
-ul {
-  background: #000;
-  color: #fff;
-  height: 360px;
-  list-style: none;
-  margin: 0;
-  overflow: hidden;
-  padding: 0;
-  width: 640px;
+img {
+  vertical-align: middle;
+}
+
+canvas {
+  background: black;
+  display: block;
 }
 
 li {
@@ -68,11 +61,13 @@ li::before {
   top: 0;
 }
 
-canvas,
-img {
-  display: block;
-}
-
-canvas {
-  background: #000;
+ul {
+  background: black;
+  color: white;
+  height: 360px;
+  list-style: none;
+  margin: 0;
+  overflow: hidden;
+  padding: 0;
+  width: 640px;
 }
