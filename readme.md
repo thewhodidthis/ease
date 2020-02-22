@@ -11,6 +11,6 @@ npm i thewhodidthis/ease
 import * as ease from '@thewhodidthis/ease'
 
 Object.keys(ease).forEach((k) => {
-    console.log(k)
+  console.log(k)
 })
 ```
