@@ -76,8 +76,11 @@ easeInOut.map(runner).map((v, i) => {
   const trendL = shiftL.reduce(sum)
   const trendR = shiftR.reduce(sum)
 
-  ok.describe(`ease in/out ${type} in goes positive`).test(trendL > 0)
-  ok.describe(`ease in/out ${type} out goes negative`).test(trendR < 0)
+  ok
+    .describe(`ease in/out ${type} in goes positive`)
+    .test(trendL > 0)
+    .describe(`ease in/out ${type} out goes negative`)
+    .test(trendR < 0)
 
   equal
     .describe(`ease in/out ${type} parts look similar`)
@@ -91,8 +94,11 @@ easeInOut.map(runner).map((v, i) => {
   const [a1, a2] = a
   const [b1, b2] = b
 
-  ok.describe(`ease in/out ${typeA} in softer than ${typeB}`).test(a1 < b1)
-  ok.describe(`ease in/out ${typeA} out softer than ${typeB}`).test(a2 > b2)
+  ok
+    .describe(`ease in/out ${typeA} in softer than ${typeB}`)
+    .test(a1 < b1)
+    .describe(`ease in/out ${typeA} out softer than ${typeB}`)
+    .test(a2 > b2)
 
   return b
 })
