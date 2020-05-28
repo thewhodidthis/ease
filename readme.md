@@ -1,12 +1,20 @@
-> Helps with the tweens
+## about
 
-### Setup
+Helps produce tweens.
+
+## setup
+
+Fetch latest from the _npm_ registry,
+
 ```sh
-# Fetch latest from github
-npm i thewhodidthis/ease
+# Includes ESM and CJS versions
+npm install @thewhodidthis/ease
 ```
 
-### Usage
+## usage
+
+To get a print out of all the methods,
+
 ```js
 import * as ease from '@thewhodidthis/ease'
 
