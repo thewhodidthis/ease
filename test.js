@@ -1,7 +1,7 @@
-'use strict'
+import assert from "tapeless"
+import * as ease from "@thewhodidthis/ease"
 
-const { ok, equal } = require('tapeless')
-const ease = require('./')
+const { ok, equal } = assert
 
 const sub = (a, b) => a - b
 const sum = (a, b) => a + b
