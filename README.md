@@ -1,14 +1,24 @@
 ## about
 
-Yet another take on [Robert Penner's](https://github.com/robertpenner) easing functions. 
+Yet another take on [Robert Penner's](https://github.com/robertpenner) easing functions.
 
 ## setup
 
-Fetch latest from the _npm_ registry:
+Download from the _npm_ registry:
 
 ```sh
-# Includes ESM and CJS versions
+# Add to package.json
 npm install @thewhodidthis/ease
+```
+
+Source from an import map to use with Deno or in-browser directly:
+
+```json
+{
+  "imports": {
+    "@thewhodidthis/ease": "https://cdn.jsdelivr.net/npm/@thewhodidthis/ease@latest/main.js"
+  }
+}
 ```
 
 ## usage
@@ -16,7 +26,7 @@ npm install @thewhodidthis/ease
 To get a print out of all exports:
 
 ```js
-import * as ease from '@thewhodidthis/ease'
+import * as ease from "@thewhodidthis/ease"
 
 Object.keys(ease).forEach((k) => {
   console.log(k)
