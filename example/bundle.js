@@ -48,21 +48,22 @@ const draw = (target, source)=>{
             return;
         }
         const y = source(x, h) * h * 0.625;
-        target.fillStyle = i % 2 === 0 ? '#888' : '#000';
+        target.fillStyle = i % 2 === 0 ? "#888" : "#000";
         target.fillRect(-y * 0.5, -y * 0.5, y, y);
         target.rotate(y * 0.001);
         next(x - 5, i + 1);
     };
     next();
 };
-const paths = 'in inOut out'.split(' ');
-const types = 'quad quint expo circ'.split(' ');
+const paths = "in inOut out".split(" ");
+const types = "quad quint expo circ".split(" ");
 const total = types.length;
-const items = document.querySelectorAll('li');
+const items = document.querySelectorAll("li");
 Array.from(items).forEach((item, i)=>{
-    const plot = item.querySelector('canvas').getContext('2d');
+    const plot = item.querySelector("canvas").getContext("2d");
     const type = types[i % total];
     const path = paths[Math.floor(i / total)];
-    item.setAttribute('data-ease', `${type}.${path}`);
+    item.setAttribute("data-ease", `${type}.${path}`);
     draw(plot, mod[type][path]);
 });
+
