@@ -23,9 +23,11 @@
     "example": "example"
   },
   "scripts": {
+    "start": "cd example; esbuild --bundle --outfile=bundle.js index.js",
     "test": "node test.js"
   },
   "devDependencies": {
+    "esbuild": "^0.12.9",
     "tapeless": "^1.0.5"
   },
   "engines": {
