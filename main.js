@@ -21,7 +21,7 @@ const from = (fn) => {
   return {
     in: (t, d) => fn(t / d),
     out: (t, d) => fnOut(t / d),
-    inOut: (t, d) => fnInOut(t / d)
+    inOut: (t, d) => fnInOut(t / d),
   }
 }
 

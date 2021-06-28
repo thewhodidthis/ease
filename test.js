@@ -27,7 +27,7 @@ const runner = (easing) => {
 }
 
 // In order from the less to the more pronounced
-const easingTypes = 'sine,quad,cubic,circ,quart,quint,expo'.split(',')
+const easingTypes = "sine,quad,cubic,circ,quart,quint,expo".split(",")
 const easings = easingTypes.map(v => ease[v])
 
 const easeIn = easings.map(v => v.in)
@@ -45,7 +45,7 @@ const increasing = easeIn.map(runner).map(summer).reduce((a, b, i) => {
 })
 
 // Ease in: sum is positive
-ok.describe('ease in goes positive').test(increasing > 0)
+ok.describe("ease in goes positive").test(increasing > 0)
 
 // Each type produces an aggregate stronger than the previous one
 const decreasing = easeOut.map(runner).map(summer).reduce((a, b, i) => {
@@ -59,7 +59,7 @@ const decreasing = easeOut.map(runner).map(summer).reduce((a, b, i) => {
 })
 
 // Ease out: sum is negative
-ok.describe('ease out goes negative').test(decreasing < 0)
+ok.describe("ease out goes negative").test(decreasing < 0)
 
 easeInOut.map(runner).map((v, i) => {
   const type = easingTypes[i]
