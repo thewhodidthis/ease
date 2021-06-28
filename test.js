@@ -1,5 +1,5 @@
-import assert from "tapeless"
-import * as ease from "@thewhodidthis/ease"
+import { assert, report } from "tapeless"
+import * as ease from "./main.js"
 
 const { ok, equal } = assert
 
@@ -84,7 +84,7 @@ easeInOut.map(runner).map((v, i) => {
 
   equal
     .describe(`ease in/out ${type} parts look similar`)
-    .test(Math.round(trendL + trendR), 0)
+    .test(Math.abs(Math.round(trendL + trendR)), 0)
 
   return [trendL, trendR]
 }).reduce((a, b, i) => {
@@ -102,3 +102,5 @@ easeInOut.map(runner).map((v, i) => {
 
   return b
 })
+
+report()
