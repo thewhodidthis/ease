@@ -27,8 +27,8 @@
     "test": "node test.js"
   },
   "devDependencies": {
-    "esbuild": "^0.12.9",
-    "tapeless": "^1.0.5"
+    "esbuild": "^0.12.11",
+    "tapeless": "^2.0.1"
   },
   "engines": {
     "node": ">=14.17.0",
