@@ -36,7 +36,7 @@ Array.from(items).forEach((item, i) => {
   const type = types[i % total]
   const path = paths[Math.floor(i / total)]
 
-  item.setAttribute("data-ease", `${type}.${path}`)
+  item.setAttribute("title", `${type}.${path}`)
 
   draw(plot, ease[type][path])
 })
