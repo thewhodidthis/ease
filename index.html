@@ -25,20 +25,30 @@
       p {
         text-align: center;
       }
+      canvas {
+        display: block;
+      }
+      img {
+        height: auto;
+        vertical-align: middle;
+      }
+      canvas,
+      img {
+        object-fit: cover;
+        max-width: 100%;
+        position: relative;
+      }
       figcaption {
-        font-size: small;
+        margin: 0 2.25rem 0 0.75rem;
       }
       figure {
+        font-size: small;
         margin: auto;
-        width: 100%;
       }
       figure figure {
-        aspect-ratio: 16 / 9;
         display: grid;
         grid-template-columns: repeat(4, 1fr);
         grid-template-rows: 1fr 1fr;
-        max-width: 40rem;
-        width: 100%;
       }
       span {
         background: black;
@@ -54,16 +64,6 @@
         letter-spacing: 1px;
         position: absolute;
         top: 0.5rem;
-      }
-      canvas,
-      img {
-        aspect-ratio: 160 / 120;
-        display: block;
-        font-size: small;
-        height: 100%;
-        object-fit: cover;
-        position: relative;
-        width: 100%;
       }
     </style>
   </head>
