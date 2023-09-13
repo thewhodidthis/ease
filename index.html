@@ -55,7 +55,7 @@
         position: relative;
       }
       span::before {
-        color: white;
+        color: #efefef;
         content: attr(title);
         display: block;
         font-size: x-small;
@@ -64,6 +64,15 @@
         letter-spacing: 1px;
         position: absolute;
         top: 0.5rem;
+      }
+      @media (prefers-color-scheme: dark) {
+        html {
+          background: #1e1e1e;
+          color: #efefef;
+        }
+        a {
+          color: inherit;
+        }
       }
     </style>
   </head>
